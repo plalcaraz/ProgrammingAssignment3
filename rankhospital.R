@@ -14,14 +14,17 @@ rankhospital <- function(state, outcome, num = "best") {
   names(sHdata)<-newNames
   if(outcome == "heart attack")
   {
+    suppressWarnings(sHdata$HA<-as.numeric(sHdata$HA))
     sHdata<-sHdata[order(sHdata$HA,sHdata$HN,na.last=NA),]
   }
   else if(outcome == "heart failure")
   {
+    suppressWarnings(sHdata$HF<-as.numeric(sHdata$HF))
     sHdata<-sHdata[order(sHdata$HF,sHdata$HN,na.last=NA),]
   }
   else if(outcome == "pneumonia")
   {
+    suppressWarnings(sHdata$PN<-as.numeric(sHdata$PN))
     sHdata<-sHdata[order(sHdata$PN,sHdata$HN,na.last=NA),]
   }
   else{
@@ -33,13 +36,15 @@ rankhospital <- function(state, outcome, num = "best") {
     index = 1
   else if(num == "worst")
     index = nrow(sHdata)
-  else if(as.numeric(num)!=NA)
+  else if(!is.na(as.numeric(num)))
     index = num
     
-  if(index>nrow(sHata))
-    return NA
-    
-  sHdata[[index,1]]
+  if(index>nrow(sHdata)){
+    NA
+  }
+  else{
+    sHdata[[index,1]]
+  }
   ## Return hospital name in that state with the given rank
   ## 30-day death rate
 }
