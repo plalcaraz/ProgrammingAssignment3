@@ -34,4 +34,22 @@ rankall <- function(outcome, num = "best") {
   ssHdata<-split(sHdata,sHdata$ST)
   ## Return a data frame with the hospital names and the
   ## (abbreviated) state name
+  index<-integer()
+  if(num =="best" || !is.na(suppressWarnings(as.numeric(num))))
+  {
+    if(num =="best" )
+      index = 1
+    else 
+      index = num
+    
+    message("inside 1st")
+    result<-lapply(ssHdata,function(x) x[index,c(1)])
+  }
+  else if(num == "worst")
+    result<-lapply(ssHdata,function(x) tail(x[,c(1)],1))
+    
+  df <- data.frame(matrix(unlist(result), nrow=length(result), byrow=T),names(result))
+  names(df)<-c("hospital","state")
+  df
 }
+
