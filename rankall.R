@@ -11,8 +11,8 @@ rankall <- function(outcome, num = "best") {
   newNames<-c("HN","ST","HA","HF","PN")
   ##Change the names with the new ones
   names(sHdata)<-newNames
-  ## split secondary data by State
- 
+  
+  ## reorder data frame according to outcome
   if(outcome == "heart attack")
   {
     suppressWarnings(sHdata$HA<-as.numeric(sHdata$HA))
@@ -31,6 +31,7 @@ rankall <- function(outcome, num = "best") {
   else{
     stop("invalid outcome")
   }
+  ## Split data frame by states
   ssHdata<-split(sHdata,sHdata$ST)
   ## Return a data frame with the hospital names and the
   ## (abbreviated) state name
@@ -47,7 +48,7 @@ rankall <- function(outcome, num = "best") {
   }
   else if(num == "worst")
     result<-lapply(ssHdata,function(x) tail(x[,c(1)],1))
-    
+  ##Transform the result of type list into a data frame made by the list of hospitals and the states  
   df <- data.frame(matrix(unlist(result), nrow=length(result), byrow=T),names(result))
   names(df)<-c("hospital","state")
   df
